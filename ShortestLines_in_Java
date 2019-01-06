@@ -1,0 +1,54 @@
+package com.doyen.fans;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class ShortestLines {
+
+    public static ArrayList<String> longestLines (String fileName, int maxLines) throws FileNotFoundException {
+
+        ArrayList<String> arr = new ArrayList<>(maxLines);
+        int indexOfShortestLine = 0;
+
+        String path = "/Users/fans/IdeaProjects/java_tutorial/src/com/doyen/fans/";
+        fileName = path + fileName;
+
+        File file = new File(fileName);
+        Scanner sc = new Scanner(file);
+
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine();
+
+            if (arr.size() < maxLines){
+                arr.add(line);
+                indexOfShortestLine = updateIndexofShortestLine(arr);
+            } else if (line.length() > arr.get(indexOfShortestLine).length()){
+                arr.remove(indexOfShortestLine);
+                arr.add(line);
+                indexOfShortestLine = updateIndexofShortestLine(arr);
+            }
+        }
+        return arr;
+    }
+
+    public static int updateIndexofShortestLine(ArrayList<String> arr){
+        int indexShortest = 0;
+        for (int i = 0; i < arr.size(); i++){
+            if (arr.get(indexShortest).length() > arr.get(i).length()){
+                indexShortest = i;
+            }
+        }
+        return indexShortest;
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        int topTen = 10;
+        ArrayList<String> lines = longestLines("dummy2.txt", topTen);
+        for (int i = 0; i < topTen; i++) {
+            System.out.println(lines.get(i));
+        }
+    }
+}
